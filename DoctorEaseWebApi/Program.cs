@@ -1,12 +1,11 @@
 using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Services.Auth;
+using DoctorEaseWebApi.Services.Password;
 using DoctorEaseWebApi.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Filters;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,24 +18,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserInterface, UserService>();
 builder.Services.AddScoped<IAuthInterface, AuthService>();
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
-});
+builder.Services.AddScoped<IPasswordInterface, PasswordService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -69,9 +51,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuer = false,
     };
 });
-
-
-
 
 var app = builder.Build();
 

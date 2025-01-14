@@ -38,6 +38,7 @@ namespace DoctorEaseWebApi.Services.Auth
                     Role = createUserDto.Role,
                     HashPassword = hashPassword,
                     SaltPassword = saltPassword,
+                    Password = createUserDto.Password,
                 };
 
                 _DbContext.Add(user);

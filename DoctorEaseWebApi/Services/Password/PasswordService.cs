@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace DoctorEaseWebApi.Services.Password
 {
-    public class PasswordService
+    public class PasswordService : IPasswordInterface
     {
         private readonly IConfiguration _Configuration;
 

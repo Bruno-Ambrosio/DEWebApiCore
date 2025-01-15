@@ -13,6 +13,6 @@ namespace DoctorEaseWebApi.Models
         public byte[] HashPassword { get; set; }
         public byte[] SaltPassword { get; set; }
         public RoleEnum Role { get; set; }
-        public DateTime TokenCreatedAt { get; set; } = DateTime.Now;
+        public DateTime TokenCreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorEaseWebApi.Controllers
 {
-    [Route("api/User/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -37,6 +37,14 @@ namespace DoctorEaseWebApi.Controllers
         public async Task<ActionResult<ResponseModel<List<UserModel>>>> RemoveUser(int userId)
         {
             ResponseModel<List<UserModel>> response = await _userInterface.RemoveUser(userId);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("GetUserById")]
+        public async Task<ActionResult<ResponseModel<UserModel>>> GetUserById(int userId)
+        {
+            ResponseModel<UserModel> response = await _userInterface.GetUserById(userId);
             return Ok(response);
         }
     }

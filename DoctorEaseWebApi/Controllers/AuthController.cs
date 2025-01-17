@@ -1,4 +1,5 @@
-﻿using DoctorEaseWebApi.Dto.User;
+﻿using DoctorEaseWebApi.Dto.Auth;
+using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
 using DoctorEaseWebApi.Services.Auth;
 using Microsoft.AspNetCore.Http;
@@ -18,9 +19,9 @@ namespace DoctorEaseWebApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<ResponseModel<string>>> Login(LoginDto loginDto)
+        public async Task<ActionResult<ResponseModel<AuthDto>>> Login(LoginDto loginDto)
         {
-            ResponseModel<string> response = await _AuthInterface.Login(loginDto);
+            ResponseModel<AuthDto> response = await _AuthInterface.Login(loginDto);
             return Ok(response);
         }
 

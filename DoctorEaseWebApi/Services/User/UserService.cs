@@ -1,6 +1,7 @@
 ﻿using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
+using DoctorEaseWebApi.Static.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorEaseWebApi.Services.User
@@ -84,12 +85,12 @@ namespace DoctorEaseWebApi.Services.User
 
                 if (user == null)
                 {
-                    response.Message = "User not found!";
+                    response.Message = WarningMessages.UserNotFound;
                     return response;
                 }
 
                 response.Content = user;
-                response.Message = "User found!";
+                response.Message = SuccessMessages.UserFound;
 
                 return response;
             }

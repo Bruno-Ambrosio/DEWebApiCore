@@ -1,7 +1,10 @@
 ﻿using DoctorEaseWebApi.Data;
+using DoctorEaseWebApi.Dto;
+using DoctorEaseWebApi.Dto.Auth;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
 using DoctorEaseWebApi.Services.Password;
+using DoctorEaseWebApi.Static.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorEaseWebApi.Services.Auth
@@ -56,9 +59,9 @@ namespace DoctorEaseWebApi.Services.Auth
             }
         }
 
-        public async Task<ResponseModel<string>> Login(LoginDto loginDto)
+        public async Task<ResponseModel<AuthDto>> Login(LoginDto loginDto)
         {
-            ResponseModel<string> response = new ResponseModel<string>();
+            ResponseModel<AuthDto> response = new ResponseModel<AuthDto>();
 
             try
             {
@@ -66,22 +69,28 @@ namespace DoctorEaseWebApi.Services.Auth
 
                 if (user == null)
                 {
-                    response.Message = "Email does not exist!";
+                    response.Message = WarningMessages.InvalidEmail;
                     response.Success = false;
                     return response;
                 }
 
                 if (!_PasswordInterface.VerifyHashPassword(loginDto.Password, user.HashPassword, user.SaltPassword))
                 {
-                    response.Message = "Invalid password!";
+                    response.Message = WarningMessages.InvalidPassword;
                     response.Success = false;
                     return response;
                 }
 
                 string token = _PasswordInterface.CreateToken(user);
 
-                response.Message = "User logged in succesfully!";
-                response.Content = token;
+                response.Message = SuccessMessages.SuccesfullyLogged;
+
+                response.Content = new AuthDto() 
+                { 
+                    Token = token,
+                    User = user,
+                };
+
                 return response;
 
             }

@@ -69,7 +69,7 @@ namespace DoctorEaseWebApi.Services.Auth
 
                 if (user == null)
                 {
-                    response.Message = WarningMessages.InvalidEmail;
+                    response.Message = WarningMessages.EmailDoesntExist;
                     response.Success = false;
                     return response;
                 }

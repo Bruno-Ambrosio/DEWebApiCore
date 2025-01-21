@@ -3,7 +3,7 @@
     public class WarningMessages
     {
         #region Auth
-        public static string InvalidEmail = "Email inválido!";
+        public static string EmailDoesntExist = "Email não existe!";
         public static string InvalidPassword = "Senha inválida!";
         #endregion
 

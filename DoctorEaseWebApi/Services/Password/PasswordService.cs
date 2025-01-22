@@ -8,11 +8,14 @@ namespace DoctorEaseWebApi.Services.Password
 {
     public class PasswordService : IPasswordInterface
     {
-        private readonly IConfiguration _Configuration;
+        private readonly IConfiguration? _Configuration;
 
-        public PasswordService(IConfiguration configuration)
+        public PasswordService(IConfiguration? configuration)
         {
-            _Configuration = configuration;
+            if (configuration != null)
+            {
+                _Configuration = configuration;
+            }
         }
 
         public void CreateHashPassword(string password, out byte[] hashPassword, out byte[] saltPassword)
@@ -42,7 +45,7 @@ namespace DoctorEaseWebApi.Services.Password
                 new Claim("Role", user.Role.ToString()),
             };
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_Configuration.GetSection("JWT:Key").Value ?? string.Empty));
+            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_Configuration?.GetSection("JWT:Key").Value ?? string.Empty));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             JwtSecurityToken token = new JwtSecurityToken(

@@ -1,6 +1,7 @@
 ﻿using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
+using DoctorEaseWebApi.Services.Password;
 using DoctorEaseWebApi.Static.Messages;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,12 @@ namespace DoctorEaseWebApi.Services.User
     public class UserService : IUserInterface
     {
         private readonly AppDbContext _DbContext;
-        public UserService(AppDbContext dbContext)
+        private readonly IPasswordInterface _PasswordInterface;
+
+        public UserService(AppDbContext dbContext, IPasswordInterface passwordInterface)
         {
             _DbContext = dbContext;
+            _PasswordInterface = passwordInterface;
         }
 
         public async Task<ResponseModel<List<UserModel>>> EditUser(EditUserDto editUserDto)
@@ -28,9 +32,13 @@ namespace DoctorEaseWebApi.Services.User
                     return response;
                 }
 
+                _PasswordInterface.CreateHashPassword(editUserDto.Password, out byte[] hashPassword, out byte[] saltPassword);
+
                 user.Name = editUserDto.Name;
                 user.Email = editUserDto.Email;
-                user.Password = editUserDto.Password;
+                user.HashPassword = hashPassword;
+                user.SaltPassword = saltPassword;
+
 
                 _DbContext.Update(user);
                 await _DbContext.SaveChangesAsync();

@@ -1,3 +1,5 @@
+using DEWebApi.Services.Gender;
+using DEWebApi.Services.Patient;
 using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Services.Auth;
 using DoctorEaseWebApi.Services.Password;
@@ -19,6 +21,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserInterface, UserService>();
 builder.Services.AddScoped<IAuthInterface, AuthService>();
 builder.Services.AddScoped<IPasswordInterface, PasswordService>();
+builder.Services.AddScoped<IPatientInterface, PatientService>();
+builder.Services.AddScoped<IGenderInterface, GenderService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

@@ -1,9 +1,6 @@
 ﻿using DEWebApi.Models;
-using DoctorEaseWebApi.Enum;
 using DoctorEaseWebApi.Models;
-using DoctorEaseWebApi.Services.Password;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DoctorEaseWebApi.Data
 {
@@ -12,6 +9,7 @@ namespace DoctorEaseWebApi.Data
         public DbSet<UserModel> Users { get; set; }
         public DbSet<PatientModel> Patients { get; set; }
         public DbSet<GenderModel> Genders { get; set; }
+        public DbSet<RoleModel> Roles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

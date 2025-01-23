@@ -1,4 +1,6 @@
-﻿using DoctorEaseWebApi.Data;
+﻿using DEWebApi.Models;
+using DEWebApi.Services.Role;
+using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Dto;
 using DoctorEaseWebApi.Dto.Auth;
 using DoctorEaseWebApi.Dto.User;
@@ -32,15 +34,24 @@ namespace DoctorEaseWebApi.Services.Auth
                     return response;
                 }
 
+                RoleModel? role = await _DbContext.Roles.FirstOrDefaultAsync(role => role.Id == createUserDto.RoleId);
+
                 _PasswordInterface.CreateHashPassword(createUserDto.Password, out byte[] hashPassword, out byte[] saltPassword);
+
+                if (role == null)
+                {
+                    response.Message = "Role cannot be find!";
+                    response.Success = false;
+                    return response;
+                }
 
                 UserModel user = new UserModel()
                 {
                     Name = createUserDto.Name,
                     Email = createUserDto.Email,
-                    Role = createUserDto.Role,
                     HashPassword = hashPassword,
                     SaltPassword = saltPassword,
+                    Role = role,
                 };
 
                 _DbContext.Add(user);

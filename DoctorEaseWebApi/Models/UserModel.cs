@@ -1,7 +1,5 @@
 ﻿
 using DEWebApi.Models;
-using DoctorEaseWebApi.Enum;
-using Microsoft.AspNetCore.Identity;
 
 namespace DoctorEaseWebApi.Models
 {

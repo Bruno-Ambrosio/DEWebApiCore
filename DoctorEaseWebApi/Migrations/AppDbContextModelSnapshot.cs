@@ -65,6 +65,23 @@ namespace DEWebApi.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("DEWebApi.Models.RoleModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("DoctorEaseWebApi.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -85,7 +102,7 @@ namespace DEWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Role")
+                    b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<byte[]>("SaltPassword")
@@ -96,6 +113,8 @@ namespace DEWebApi.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -109,6 +128,17 @@ namespace DEWebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Gender");
+                });
+
+            modelBuilder.Entity("DoctorEaseWebApi.Models.UserModel", b =>
+                {
+                    b.HasOne("DEWebApi.Models.RoleModel", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

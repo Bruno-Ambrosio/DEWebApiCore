@@ -39,7 +39,6 @@ namespace DoctorEaseWebApi.Services.User
                 user.HashPassword = hashPassword;
                 user.SaltPassword = saltPassword;
 
-
                 _DbContext.Update(user);
                 await _DbContext.SaveChangesAsync();
 

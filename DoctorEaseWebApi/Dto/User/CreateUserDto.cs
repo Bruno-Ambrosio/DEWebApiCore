@@ -1,4 +1,4 @@
-﻿using DoctorEaseWebApi.Enum;
+﻿using DEWebApi.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace DoctorEaseWebApi.Dto.User
@@ -14,6 +14,6 @@ namespace DoctorEaseWebApi.Dto.User
         [Required(ErrorMessage = "Confirm Password must be informed!")]
         public string ConfirmPassword { get; set; } = string.Empty;
         [Required(ErrorMessage = "Role must be informed!")]
-        public RoleEnum Role { get; set; }
+        public int RoleId { get; set; }
     }
 }

@@ -1,6 +1,11 @@
-﻿namespace DEWebApi.Services.Role
+﻿using DEWebApi.Dto.Role;
+using DEWebApi.Models;
+using DoctorEaseWebApi.Models;
+
+namespace DEWebApi.Services.Role
 {
-    public class IRoleInterface
+    public interface IRoleInterface
     {
+        Task<ResponseModel<List<RoleModel>>> GetAllRoles();
     }
 }

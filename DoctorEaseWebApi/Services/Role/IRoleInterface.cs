@@ -6,6 +6,7 @@ namespace DEWebApi.Services.Role
 {
     public interface IRoleInterface
     {
-        Task<ResponseModel<List<RoleModel>>> GetAllRoles();
+        Task<ResponseModel<List<RoleModel>>> GetRoles();
+        Task<ResponseModel<RoleModel>> CreateRole(CreateRoleDto createRoleDto);
     }
 }

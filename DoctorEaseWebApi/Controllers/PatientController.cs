@@ -22,15 +22,15 @@ namespace DEWebApi.Controllers
         }
 
 
-        [HttpGet("patients")]
+        [HttpGet("Patients")]
         public async Task<ActionResult<ResponseModel<List<PatientModel>>>> GetPatients()
         {
             ResponseModel<List<PatientModel>> response = await _patientInterface.GetPatients();
             return Ok(response);
         }
 
-        [HttpPost("patient")]
-        public async Task<ActionResult<ResponseModel<PatientModel>>> Register(CreatePatientDto createPatientDto)
+        [HttpPost("CreatePatient")]
+        public async Task<ActionResult<ResponseModel<PatientModel>>> CreatePatient(CreatePatientDto createPatientDto)
         {
             ResponseModel<PatientModel> response = await _patientInterface.CreatePatient(createPatientDto);
             return Ok(response);

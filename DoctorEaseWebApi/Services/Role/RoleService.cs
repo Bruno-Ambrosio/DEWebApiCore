@@ -72,5 +72,37 @@ namespace DEWebApi.Services.Role
                 return response;
             }
         }
+
+        public async Task<ResponseModel<List<RoleModel>>> EditRole(EditRoleDto editRoleDto)
+        {
+            ResponseModel<List<RoleModel>> response = new ResponseModel<List<RoleModel>>();
+
+            try
+            {
+                RoleModel? role = await _DbContext.Roles.FirstOrDefaultAsync(user => user.Id == editRoleDto.Id);
+
+                if (role == null)
+                {
+                    response.Message = "Role not found!";
+                    return response;
+                }
+
+                role.Description = editRoleDto.Description;
+
+                _DbContext.Update(role);
+                await _DbContext.SaveChangesAsync();
+
+                response.Content = await _DbContext.Roles.ToListAsync();
+                response.Message = "Role succesfully edited!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+                return response;
+            }
+        }
     }
 }

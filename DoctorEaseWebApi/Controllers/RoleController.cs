@@ -3,7 +3,10 @@ using DEWebApi.Dto.Role;
 using DEWebApi.Models;
 using DEWebApi.Services.Patient;
 using DEWebApi.Services.Role;
+using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
+using DoctorEaseWebApi.Services.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEWebApi.Controllers
@@ -31,6 +34,14 @@ namespace DEWebApi.Controllers
         public async Task<ActionResult<ResponseModel<RoleModel>>> CreateRole(CreateRoleDto createRoleDto)
         {
             ResponseModel<RoleModel> response = await _roleInterface.CreateRole(createRoleDto);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPut("EditRole")]
+        public async Task<ActionResult<ResponseModel<List<RoleModel>>>> EditRole(EditRoleDto editRole)
+        {
+            ResponseModel<List<RoleModel>> response = await _roleInterface.EditRole(editRole);
             return Ok(response);
         }
     }

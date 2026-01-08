@@ -1,4 +1,6 @@
-﻿namespace DEWebApi.Models
+﻿using DoctorEaseWebApi.Models;
+
+namespace DEWebApi.Models
 {
     public class RoleModel
     {

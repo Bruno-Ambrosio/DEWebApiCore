@@ -24,7 +24,7 @@ namespace DEWebApi.Controllers
 
 
         [HttpGet("Roles")]
-        public async Task<ActionResult<ResponseModel<List<RoleModel>>>> GetPatients()
+        public async Task<ActionResult<ResponseModel<List<RoleModel>>>> GetRoles()
         {
             ResponseModel<List<RoleModel>> response = await _roleInterface.GetRoles();
             return Ok(response);

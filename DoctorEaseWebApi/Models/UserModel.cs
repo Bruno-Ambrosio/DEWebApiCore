@@ -10,7 +10,8 @@ namespace DoctorEaseWebApi.Models
         public string Email { get; set; } = string.Empty;
         public byte[] HashPassword { get; set; } = new byte[0];
         public byte[] SaltPassword { get; set; } = new byte[0];
-        public RoleModel Role { get; set; } = new RoleModel();
+        public RoleModel? Role { get; set; }
+        public int RoleId { get; set; }
         public DateTime TokenCreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

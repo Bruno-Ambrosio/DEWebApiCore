@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DEWebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250123012937_m1")]
-    partial class m1
+    [Migration("20260108175402_InitialCreate4")]
+    partial class InitialCreate4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,12 +136,17 @@ namespace DEWebApi.Migrations
             modelBuilder.Entity("DoctorEaseWebApi.Models.UserModel", b =>
                 {
                     b.HasOne("DEWebApi.Models.RoleModel", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("DEWebApi.Models.RoleModel", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

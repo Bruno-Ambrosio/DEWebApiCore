@@ -11,12 +11,12 @@ namespace DEWebApi.Services.Role
     public class RoleService : IRoleInterface
     {
         private readonly AppDbContext _DbContext;
-        private readonly IRoleInterface _IRoleInterface;
+        private readonly IConfiguration _Configuration;
 
-        public RoleService(AppDbContext dbContext, IRoleInterface IRoleInterface)
+        public RoleService(AppDbContext dbContext, IConfiguration configuration)
         {
             _DbContext = dbContext;
-            _IRoleInterface = IRoleInterface;
+            _Configuration = configuration;
         }
 
         public async Task<ResponseModel<List<RoleModel>>> GetRoles()

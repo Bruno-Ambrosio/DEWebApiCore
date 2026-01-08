@@ -84,6 +84,8 @@ namespace DoctorEaseWebApi.Services.Auth
                     return response;
                 }
 
+                user.Role = await _DbContext.Roles.FirstOrDefaultAsync(role => role.Id == user.RoleId);
+
                 if (!_PasswordInterface.VerifyHashPassword(loginDto.Password, user.HashPassword, user.SaltPassword))
                 {
                     response.Message = WarningMessages.InvalidPassword;

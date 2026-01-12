@@ -47,6 +47,13 @@ namespace DEWebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("AdditionalInfo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("text");

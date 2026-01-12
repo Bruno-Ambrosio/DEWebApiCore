@@ -15,5 +15,12 @@ namespace DoctorEaseWebApi.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<PatientModel>()
+                .Property(p => p.AdditionalInfo)
+                .HasColumnType("text");
+        }
     }
 }

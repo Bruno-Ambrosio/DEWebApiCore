@@ -46,7 +46,9 @@ namespace DEWebApi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Adress = table.Column<string>(type: "text", nullable: false),
-                    GenderId = table.Column<int>(type: "integer", nullable: false)
+                    GenderId = table.Column<int>(type: "integer", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    AdditionalInfo = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

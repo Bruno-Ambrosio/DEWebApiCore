@@ -1,7 +1,10 @@
-﻿using DEWebApi.Models;
+﻿using DEWebApi.Dto.Exam;
+using DEWebApi.Models;
 using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEWebApi.Services.Exam
 {
@@ -56,7 +59,7 @@ namespace DEWebApi.Services.Exam
                     var newExam = new ExamModel
                     {
                         Title = title,
-                        FileName = fileName,
+                        FileName = fileNameGuid,
                         FilePath = path,
                         Date = date.ToUniversalTime(),
                         PatientId = patientId
@@ -77,6 +80,95 @@ namespace DEWebApi.Services.Exam
                     response.Success = false;
                 }
 
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+                return response;
+            }
+        }
+
+        public async Task<ResponseModel<List<GetExamsByPatientIdDto>>> GetExamsByPatientId(int patientId)
+        {
+            ResponseModel<List<GetExamsByPatientIdDto>> response = new ResponseModel<List<GetExamsByPatientIdDto>>();
+
+            try
+            {
+                List<ExamModel> exams = await _DbContext.Exams.Where(exam => exam.PatientId == patientId).ToListAsync();
+
+                if (exams == null || exams.Count == 0)
+                {
+                    response.Content = null;
+                    response.Message = "Patient doesn't have any exam.";
+                    response.Success = true;
+                    return response;
+                }
+
+                List<GetExamsByPatientIdDto> examsDto = new List<GetExamsByPatientIdDto>();
+
+                foreach (var exam in exams)
+                {
+                    examsDto.Add(new GetExamsByPatientIdDto
+                    {
+                        Id = exam.Id,
+                        Title = exam.Title
+                    });
+                }
+
+                response.Content = examsDto;
+                response.Message = "Get exams succeded!";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+                return response;
+            }
+        }
+
+        public async Task<(string FilePath, string FileName)?> GetExamFile(int id)
+        {
+            var exam = await _DbContext.Exams.FindAsync(id);
+
+            if (exam == null)
+                return null;
+
+            if (!System.IO.File.Exists(exam.FilePath))
+                return null;
+
+            return (exam.FilePath, exam.FileName);
+        }
+
+        public async Task<ResponseModel<bool>> DeleteExam(int id)
+        {
+            ResponseModel<bool> response = new ResponseModel<bool>();
+
+            try
+            {
+                ExamModel? exam = await _DbContext.Exams.FindAsync(id);
+
+                if (exam == null)
+                {
+                    response.Content = false;
+                    response.Message = "Exam not found.";
+                    response.Success = true;
+                    return response;
+                }
+
+                if (File.Exists(exam.FilePath))
+                {
+                    File.Delete(exam.FilePath);
+                }
+
+                _DbContext.Exams.Remove(exam);
+                await _DbContext.SaveChangesAsync();
+
+                response.Content = true;
+                response.Message = "Exam deleted!";
+                response.Success = true;
                 return response;
             }
             catch (Exception ex)

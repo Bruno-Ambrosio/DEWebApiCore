@@ -10,6 +10,7 @@ namespace DoctorEaseWebApi.Data
         public DbSet<PatientModel> Patients { get; set; }
         public DbSet<GenderModel> Genders { get; set; }
         public DbSet<RoleModel> Roles { get; set; }
+        public DbSet<ExamModel> Exams { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

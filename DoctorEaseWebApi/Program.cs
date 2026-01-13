@@ -1,3 +1,4 @@
+using DEWebApi.Services.Exam;
 using DEWebApi.Services.Gender;
 using DEWebApi.Services.Patient;
 using DEWebApi.Services.Role;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IPasswordInterface, PasswordService>();
 builder.Services.AddScoped<IPatientInterface, PatientService>();
 builder.Services.AddScoped<IGenderInterface, GenderService>();
 builder.Services.AddScoped<IRoleInterface, RoleService>();
+builder.Services.AddScoped<IExamInterface, ExamService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

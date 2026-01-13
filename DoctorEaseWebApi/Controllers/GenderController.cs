@@ -19,7 +19,7 @@ namespace DEWebApi.Controllers
         }
 
 
-        [HttpGet("genders")]
+        [HttpGet("Genders")]
         public async Task<ActionResult<ResponseModel<List<GenderModel>>>> GetGenders()
         {
             ResponseModel<List<GenderModel>> response = await _genderInterface.GetGenders();

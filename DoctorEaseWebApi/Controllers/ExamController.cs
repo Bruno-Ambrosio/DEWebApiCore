@@ -1,6 +1,7 @@
 ﻿using DEWebApi.Dto.Exam;
 using DEWebApi.Services.Exam;
 using DoctorEaseWebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEWebApi.Controllers
@@ -16,6 +17,7 @@ namespace DEWebApi.Controllers
             _examInterface = examInterface;
         }
 
+        [Authorize]
         [HttpPost("UploadExam")]
         public async Task<ActionResult<ResponseModel<bool>>> UploadExam(
                                              [FromForm] List<IFormFile> files,
@@ -28,6 +30,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet("GetExamsByPatientId:{id}")]
         public async Task<ActionResult<ResponseModel<List<GetExamsByPatientIdDto>>>> GetExamsByPatientId(int id)
         {
@@ -35,23 +38,24 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet("Open/{id}")]
         public async Task<IActionResult> OpenExam(int id)
         {
-            var result = await _examInterface.GetExamFile(id);
+            var exam = await _examInterface.GetExamFile(id);
 
-            if (result == null)
+            if (exam == null)
             {
                 return NotFound();
             }
 
-            var (filePath, fileName) = result.Value;
+            var stream = new FileStream(exam.FilePath, FileMode.Open, FileAccess.Read);
+            Response.Headers["Content-Disposition"] = $"inline; filename=\"{exam.FileName}\"";
 
-            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-
-            return File(stream, "application/pdf");
+            return File(stream, "application/pdf", exam.Title);
         }
 
+        [Authorize]
         [HttpDelete("Delete:{id}")]
         public async Task<ActionResult<ResponseModel<bool>>> DeleteExam(int id)
         {

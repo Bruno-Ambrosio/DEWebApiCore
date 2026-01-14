@@ -40,9 +40,10 @@ namespace DoctorEaseWebApi.Services.Password
         {
             List<Claim> claims = new List<Claim>()
             {
+                new Claim("Id", user.Id.ToString()),
                 new Claim("Name", user.Name.ToString()),
                 new Claim("Email", user.Email.ToString()),
-                new Claim("Role", user.Role.ToString()),
+                new Claim("Role", user.Role?.ToString()!),
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_Configuration?.GetSection("JWT:Key").Value ?? string.Empty));
@@ -50,7 +51,7 @@ namespace DoctorEaseWebApi.Services.Password
 
             JwtSecurityToken token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.UtcNow.AddDays(1),
+                    expires: DateTime.UtcNow.AddHours(2),
                     signingCredentials: credentials
                 );
 

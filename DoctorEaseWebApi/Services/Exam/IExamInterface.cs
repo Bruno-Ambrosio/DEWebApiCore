@@ -1,4 +1,5 @@
 ﻿using DEWebApi.Dto.Exam;
+using DEWebApi.Models;
 using DoctorEaseWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace DEWebApi.Services.Exam
                                              [FromForm] List<string> dates,
                                              [FromForm] List<int> patientIds);
         Task<ResponseModel<List<GetExamsByPatientIdDto>>> GetExamsByPatientId(int patientId);
-        Task<(string FilePath, string FileName)?> GetExamFile(int id);
+        Task<ExamModel?> GetExamFile(int id);
         Task<ResponseModel<bool>> DeleteExam(int id);
     }
 }

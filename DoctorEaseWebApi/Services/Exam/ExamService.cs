@@ -129,7 +129,7 @@ namespace DEWebApi.Services.Exam
             }
         }
 
-        public async Task<(string FilePath, string FileName)?> GetExamFile(int id)
+        public async Task<ExamModel?> GetExamFile(int id)
         {
             var exam = await _DbContext.Exams.FindAsync(id);
 
@@ -139,7 +139,7 @@ namespace DEWebApi.Services.Exam
             if (!System.IO.File.Exists(exam.FilePath))
                 return null;
 
-            return (exam.FilePath, exam.FileName);
+            return (exam);
         }
 
         public async Task<ResponseModel<bool>> DeleteExam(int id)

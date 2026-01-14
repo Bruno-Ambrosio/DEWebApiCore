@@ -3,6 +3,7 @@ using DEWebApi.Services.Gender;
 using DEWebApi.Services.Patient;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEWebApi.Controllers
@@ -18,7 +19,7 @@ namespace DEWebApi.Controllers
             _genderInterface = genderInterface;
         }
 
-
+        [Authorize]
         [HttpGet("Genders")]
         public async Task<ActionResult<ResponseModel<List<GenderModel>>>> GetGenders()
         {

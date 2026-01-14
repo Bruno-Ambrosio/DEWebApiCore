@@ -2,6 +2,7 @@
 using DEWebApi.Models;
 using DEWebApi.Services.Patient;
 using DoctorEaseWebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEWebApi.Controllers
@@ -17,7 +18,7 @@ namespace DEWebApi.Controllers
             _patientInterface = patientInterface;
         }
 
-
+        [Authorize]
         [HttpGet("Patients")]
         public async Task<ActionResult<ResponseModel<List<PatientModel>>>> GetPatients()
         {
@@ -25,6 +26,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost("CreatePatient")]
         public async Task<ActionResult<ResponseModel<PatientModel>>> CreatePatient(CreatePatientDto createPatientDto)
         {
@@ -32,6 +34,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet("GetPatient:{id}")]
         public async Task<ActionResult<ResponseModel<PatientModel>>> GetPatientById(int id)
         {
@@ -39,6 +42,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPut("EditPatient")]
         public async Task<ActionResult<ResponseModel<PatientModel>>> EditPatient(EditPatientDto patient)
         {
@@ -46,6 +50,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPatch("ChangePatientStatus:{id}")]
         public async Task<ActionResult<ResponseModel<bool>>> ChangePatientStatus(int id, [FromBody] bool active)
         {
@@ -53,6 +58,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPatch("UpdateAdditionalInfo:{id}")]
         public async Task<ActionResult<ResponseModel<bool>>> UpdateAdditionalInfo(int id, [FromBody] string info)
         {

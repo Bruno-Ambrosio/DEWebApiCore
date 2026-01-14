@@ -22,7 +22,6 @@ namespace DEWebApi.Controllers
             _roleInterface = roleInterface;
         }
 
-
         [HttpGet("Roles")]
         public async Task<ActionResult<ResponseModel<List<RoleModel>>>> GetRoles()
         {
@@ -30,6 +29,7 @@ namespace DEWebApi.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost("CreateRole")]
         public async Task<ActionResult<ResponseModel<RoleModel>>> CreateRole(CreateRoleDto createRoleDto)
         {

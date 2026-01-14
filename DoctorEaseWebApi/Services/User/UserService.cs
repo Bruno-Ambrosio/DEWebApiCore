@@ -1,4 +1,5 @@
-﻿using DoctorEaseWebApi.Data;
+﻿using DEWebApi.Dto.User;
+using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
 using DoctorEaseWebApi.Services.Password;

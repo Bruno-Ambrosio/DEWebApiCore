@@ -1,5 +1,4 @@
-﻿using DEWebApi.Dto.User;
-using DoctorEaseWebApi.Data;
+﻿using DoctorEaseWebApi.Data;
 using DoctorEaseWebApi.Dto.User;
 using DoctorEaseWebApi.Models;
 using DoctorEaseWebApi.Services.Password;
@@ -151,6 +150,95 @@ namespace DoctorEaseWebApi.Services.User
                 response.Content = await _DbContext.Users.ToListAsync();
                 response.Message = "User succesfully deleted!";
 
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+                return response;
+            }
+        }
+
+        public async Task<ResponseModel<bool>> UploadImage(IFormFile file, int userId)
+        {
+            ResponseModel<bool> response = new ResponseModel<bool>();
+
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    response.Content = false;
+                    response.Message = $"Invalid file.";
+                    response.Success = false;
+                    return response;
+                }
+
+                string? ext = Path.GetExtension(file.FileName).ToLower();
+                string? fileNameGuid = $"{userId}{ext}";
+                string? path = Path.Combine("Uploads", "User", fileNameGuid);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
+                using FileStream stream = new FileStream(path, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+                UserModel? user = await _DbContext.Users.FindAsync(userId);
+
+                if (user == null)
+                {
+                    response.Content = false;
+                    response.Message = "User not found.";
+                    response.Success = false;
+                    return response;
+                }
+
+                user.ImagePath = path;
+                await _DbContext.SaveChangesAsync();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+                return response;
+            }
+        }
+
+        public async Task<string> GetImagePath(int userId)
+        {
+            UserModel? user = await _DbContext.Users.FindAsync(userId);
+            return user?.ImagePath ?? string.Empty;
+        }
+
+        public async Task<ResponseModel<bool>> DeleteImage(int id)
+        {
+            ResponseModel<bool> response = new ResponseModel<bool>();
+
+            try
+            {
+                UserModel? user = await _DbContext.Users.FindAsync(id);
+
+                if (user == null)
+                {
+                    response.Content = false;
+                    response.Message = "User not found.";
+                    response.Success = true;
+                    return response;
+                }
+
+                if (File.Exists(user.ImagePath))
+                {
+                    File.Delete(user.ImagePath);
+                }
+
+                user.ImagePath = null;
+                await _DbContext.SaveChangesAsync();
+
+                response.Content = true;
+                response.Message = "Image deleted!";
+                response.Success = true;
                 return response;
             }
             catch (Exception ex)

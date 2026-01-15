@@ -47,5 +47,37 @@ namespace DoctorEaseWebApi.Controllers
             ResponseModel<UserModel> response = await _userInterface.GetUserById(userId);
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpPost("UploadImage")]
+        public async Task<ActionResult<ResponseModel<bool>>> UploadImage(IFormFile file)
+        {
+            int id = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            ResponseModel<bool> response = await _userInterface.UploadImage(file, id);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("GetImage")]
+        public async Task<ActionResult<ResponseModel<bool>>> GetImage()
+        {
+            int id = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            string imagePath = await _userInterface.GetImagePath(id);
+            if (imagePath == null || !System.IO.File.Exists(imagePath))
+            {
+                return NotFound();
+            }
+
+            return PhysicalFile(imagePath, "image/jpeg");
+        }
+
+        [Authorize]
+        [HttpDelete("DeleteImage")]
+        public async Task<ActionResult<ResponseModel<bool>>> DeleteImage()
+        {
+            int id = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            ResponseModel<bool> response = await _userInterface.DeleteImage(id);
+            return Ok(response);
+        }
     }
 }

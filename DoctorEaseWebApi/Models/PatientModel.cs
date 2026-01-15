@@ -9,5 +9,6 @@
         public GenderModel Gender { get; set; } = new GenderModel();
         public bool Active { get; set; } = true;
         public string AdditionalInfo { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
     }
 }

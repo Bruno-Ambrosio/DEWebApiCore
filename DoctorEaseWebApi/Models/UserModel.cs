@@ -13,5 +13,6 @@ namespace DoctorEaseWebApi.Models
         public RoleModel? Role { get; set; }
         public int RoleId { get; set; }
         public DateTime TokenCreatedAt { get; set; } = DateTime.UtcNow;
+        public string? ImagePath { get; set; } = null;
     }
 }
